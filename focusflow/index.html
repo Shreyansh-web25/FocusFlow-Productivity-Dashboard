@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#10131f">
+  <title>FocusFlow — Make time count</title>
+  <meta name="description" content="A simple focus timer and task planner to help you do your best work.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="FocusFlow home">
+        <span class="brand-mark">✦</span><span>focus<span class="brand-light">flow</span></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav-list" aria-label="Main navigation">
+        <button class="nav-item active" data-view="today"><span class="nav-icon">◷</span> Today <span class="nav-count" id="navTodayCount">0</span></button>
+        <button class="nav-item" data-view="upcoming"><span class="nav-icon">▦</span> All tasks</button>
+        <button class="nav-item" data-view="completed"><span class="nav-icon">✓</span> Completed</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="mini-card">
+          <div class="mini-spark">✧</div>
+          <p class="mini-title">Small steps.<br>Big progress.</p>
+          <p class="mini-copy">Consistency beats intensity. Keep showing up.</p>
+          <div class="mini-progress"><span id="miniProgress"></span></div>
+          <div class="mini-foot"><span>Today's progress</span><strong id="miniPercent">0%</strong></div>
+        </div>
+        <div class="sidebar-note"><span class="status-dot"></span> Your work stays on this device</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark">✦</span> focus<span class="brand-light">flow</span></div>
+        <div class="date-label" id="dateLabel">YOUR DAY, YOUR PACE</div>
+        <button class="icon-button" id="themeToggle" title="Toggle color theme" aria-label="Toggle color theme">☼</button>
+      </header>
+
+      <section class="welcome-row">
+        <div>
+          <p class="eyebrow">MAKE TODAY COUNT</p>
+          <h1 id="greeting">Let's get focused<span class="accent-dot">.</span></h1>
+          <p class="subtitle">One thing at a time. You've got this.</p>
+        </div>
+        <button class="primary-button" id="newTaskTop"><span>＋</span> New task</button>
+      </section>
+
+      <section class="stats-grid" aria-label="Task statistics">
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Tasks for today</span><span class="stat-icon lavender">▤</span></div>
+          <div class="stat-number" id="statTotal">0</div><div class="stat-foot">Keep your momentum going</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Completed</span><span class="stat-icon mint">✓</span></div>
+          <div class="stat-number" id="statCompleted">0</div><div class="stat-foot"><span class="green-text" id="completionRate">0%</span> of your task list</div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span class="stat-label">Focus sessions</span><span class="stat-icon peach">◷</span></div>
+          <div class="stat-number" id="statSessions">0</div><div class="stat-foot">Every session adds up</div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <div class="tasks-panel panel">
+          <div class="panel-heading">
+            <div><p class="eyebrow" id="taskEyebrow">YOUR PRIORITIES</p><h2 id="taskHeading">Today's tasks</h2></div>
+            <button class="text-button" id="clearCompleted">Clear completed</button>
+          </div>
+          <div class="task-toolbar">
+            <div class="filter-tabs" role="group" aria-label="Filter tasks">
+              <button class="filter-tab active" data-filter="all">All</button>
+              <button class="filter-tab" data-filter="active">Active</button>
+              <button class="filter-tab" data-filter="completed">Done</button>
+            </div>
+            <span class="task-count" id="taskCount">0 tasks</span>
+          </div>
+          <form class="quick-add" id="taskForm">
+            <span class="plus-small">＋</span>
+            <input id="taskInput" type="text" maxlength="100" placeholder="Add a task and press Enter..." autocomplete="off" required>
+            <select id="taskPriority" aria-label="Task priority">
+              <option value="medium">Medium</option><option value="high">High</option><option value="low">Low</option>
+            </select>
+            <button type="submit" aria-label="Add task">Add</button>
+          </form>
+          <div class="task-list" id="taskList"></div>
+          <div class="empty-state" id="emptyState">
+            <div class="empty-illustration">✧</div><h3>Clear mind, clear list.</h3><p>Add your first task and make a little progress.</p>
+            <button class="secondary-button" id="emptyAdd">＋ Add a task</button>
+          </div>
+          <div class="tasks-footer"><span class="tiny-check">✓</span> Progress is progress, no matter how small.</div>
+        </div>
+
+        <div class="right-column">
+          <section class="timer-panel panel">
+            <div class="panel-heading"><div><p class="eyebrow">DEEP WORK</p><h2>Focus timer</h2></div><span class="timer-live"><span></span> FOCUS MODE</span></div>
+            <div class="timer-tabs" role="group" aria-label="Timer duration">
+              <button class="timer-tab active" data-minutes="25" data-mode="focus">Focus</button>
+              <button class="timer-tab" data-minutes="5" data-mode="short">Short break</button>
+              <button class="timer-tab" data-minutes="15" data-mode="long">Long break</button>
+            </div>
+            <div class="timer-face">
+              <svg class="timer-ring" viewBox="0 0 220 220" aria-hidden="true">
+                <circle class="ring-track" cx="110" cy="110" r="96"></circle>
+                <circle class="ring-progress" id="timerRing" cx="110" cy="110" r="96"></circle>
+              </svg>
+              <div class="timer-time-wrap"><div class="timer-time" id="timerTime">25:00</div><div class="timer-caption" id="timerCaption">TIME TO FOCUS</div></div>
+            </div>
+            <div class="timer-actions"><button class="primary-button timer-start" id="timerStart">▶ Start focus</button><button class="reset-button" id="timerReset" aria-label="Reset timer" title="Reset timer">↺</button></div>
+            <p class="timer-hint">Put distractions away. You only need to start.</p>
+          </section>
+          <section class="quote-card">
+            <div class="quote-mark">“</div><p class="quote-text" id="quoteText">You don't have to see the whole staircase, just take the first step.</p><div class="quote-bottom"><span class="quote-line"></span><span id="quoteAuthor">MARTIN LUTHER KING JR.</span></div>
+            <button class="quote-refresh" id="newQuote" title="New quote" aria-label="Show another quote">↻</button>
+          </section>
+        </div>
+      </section>
+      <footer class="page-footer"><span>FOCUSFLOW <span class="footer-dot">●</span> BUILT FOR BETTER DAYS</span><span>Made for your next small win ✦</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
